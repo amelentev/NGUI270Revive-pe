@@ -60,6 +60,12 @@ public class UIAnchor : MonoBehaviour
 	public bool halfPixelOffset = true;
 
 	/// <summary>
+	/// Depth offset applied to the anchored widget. Mainly useful for 3D UIs.
+	/// </summary>
+	[Obsolete("Removed in 2.3.0: Removed UIAnchor.depthOffset seeing as it caused more confusion than anything else. Just use an offset child GameObject.")]
+	public float depthOffset = 0f;
+
+	/// <summary>
 	/// If set to 'true', UIAnchor will execute once, then will be removed. Useful if your screen resolution never changes.
 	/// </summary>
 
@@ -98,7 +104,6 @@ public class UIAnchor : MonoBehaviour
 		mRoot = NGUITools.FindInParents<UIRoot>(gameObject);
 		mNeedsHalfPixelOffset = (Application.platform == RuntimePlatform.WindowsPlayer ||
 			Application.platform == RuntimePlatform.XBOX360 ||
-			Application.platform == RuntimePlatform.WindowsWebPlayer ||
 			Application.platform == RuntimePlatform.WindowsEditor);
 
 		// Only DirectX 9 needs the half-pixel offset
@@ -168,7 +173,7 @@ public class UIAnchor : MonoBehaviour
 
 		float cx = (mRect.xMin + mRect.xMax) * 0.5f;
 		float cy = (mRect.yMin + mRect.yMax) * 0.5f;
-		Vector3 v = new Vector3(cx, cy, 0f);
+		Vector3 v = new Vector3(cx, cy, depthOffset);
 
 		if (side != Side.Center)
 		{

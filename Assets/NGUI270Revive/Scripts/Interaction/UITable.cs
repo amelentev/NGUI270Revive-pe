@@ -33,6 +33,8 @@ public class UITable : MonoBehaviour
 	public bool keepWithinPanel = false;
 	public OnReposition onReposition;
 
+	public float mVariableHeight = 0;
+
 	UIPanel mPanel;
 	UIDraggablePanel mDrag;
 	bool mStarted = false;
@@ -145,6 +147,7 @@ public class UITable : MonoBehaviour
 				xOffset = 0f;
 				yOffset += bc.size.y + padding.y * 2f;
 			}
+			mVariableHeight = yOffset;
 		}
 	}
 

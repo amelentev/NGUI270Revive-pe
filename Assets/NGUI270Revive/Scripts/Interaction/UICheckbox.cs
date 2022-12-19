@@ -70,6 +70,8 @@ public class UICheckbox : MonoBehaviour
 
 	public OnStateChange onStateChange;
 
+	public bool IsUseSelfOnClick=true;
+
 	// Prior to 1.90 'option' was used to toggle the radio button group functionality
 	[HideInInspector][SerializeField] bool option = false;
 
@@ -120,7 +122,10 @@ public class UICheckbox : MonoBehaviour
 	/// Check or uncheck on click.
 	/// </summary>
 
-	void OnClick () { if (enabled) isChecked = !isChecked; }
+	void OnClick () {
+		if (!IsUseSelfOnClick) return;
+		if (enabled) isChecked = !isChecked;
+	}
 
 	/// <summary>
 	/// Fade out or fade in the checkmark and notify the target of OnChecked event.

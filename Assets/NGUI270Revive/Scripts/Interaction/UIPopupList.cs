@@ -136,6 +136,7 @@ public class UIPopupList : MonoBehaviour
 	[HideInInspector][SerializeField] string mSelectedItem;
 	UIPanel mPanel;
 	GameObject mChild;
+	public GameObject ChildPopupMenu { get { return mChild; } }
 	UISprite mBackground;
 	UISprite mHighlight;
 	UILabel mHighlightedLabel = null;

@@ -34,6 +34,7 @@ public class UIEventListener : MonoBehaviour
 	public ObjectDelegate onDrop;
 	public StringDelegate onInput;
 	public KeyCodeDelegate onKey;
+	public BoolDelegate onActivate;
 
 	void OnSubmit ()				{ if (onSubmit != null) onSubmit(gameObject); }
 	void OnClick ()					{ if (onClick != null) onClick(gameObject); }
@@ -46,6 +47,7 @@ public class UIEventListener : MonoBehaviour
 	void OnDrop (GameObject go)		{ if (onDrop != null) onDrop(gameObject, go); }
 	void OnInput (string text)		{ if (onInput != null) onInput(gameObject, text); }
 	void OnKey (KeyCode key)		{ if (onKey != null) onKey(gameObject, key); }
+	void OnActivate (bool active)	{ if (onActivate != null) onActivate(gameObject, active);}
 
 	/// <summary>
 	/// Get or add an event listener to the specified game object.
