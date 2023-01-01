@@ -16,6 +16,13 @@ public class UIInputValidator : MonoBehaviour
 		Alphanumeric,
 		Username,
 		Name,
+		// PE specific
+		FileName,
+		FilePath,
+		CharacterName,
+		ServerName,
+		Password,
+		PositiveInteger
 	}
 
 	/// <summary>
@@ -91,6 +98,86 @@ public class UIInputValidator : MonoBehaviour
 			{
 				// Don't allow more than one space in a row
 				if (lastChar != ' ' && lastChar != '\'') return ch;
+			}
+		}
+		else if (logic == Validation.FilePath)
+		{
+			if (ch != ':' && ch != '*' && ch != '\r' && ch != '\n' &&
+				 ch != '?' && ch != '\"' && ch != '<' && ch != '>' && ch != '|')
+				return ch;
+		}
+		else if (logic == Validation.FileName)
+		{
+			if (ch != '/' && ch != '\\' && ch != ':' && ch != '*' && ch != '\r' && ch != '\n' &&
+				 ch != '?' && ch != '\"' && ch != '<' && ch != '>' && ch != '|')
+				return ch;
+		}
+		else if (logic == Validation.CharacterName)
+		{
+			char lastChar = (text.Length > 0) ? text[text.Length - 1] : ' ';
+
+			if (ch >= 'a' && ch <= 'z')
+			{
+				return ch;
+			}
+			else if (ch >= 'A' && ch <= 'Z')
+			{
+				return ch;
+			}
+			else if (ch == ' ')
+			{
+				// Don't allow more than one space in a row
+				if (lastChar != ' ' && lastChar != '\'') return ch;
+			}
+			else if (ch>='0'&&ch<='9')
+			{
+				//number
+				return ch;
+			}
+			else if (ch=='-'||ch=='.'||ch=='_'||ch=='='||ch=='[' || ch==']' || ch=='{' || ch=='}' || ch=='(' || ch==')'||ch==':')
+			{
+				return ch;
+			}
+		}
+		else if (logic == Validation.ServerName)
+		{
+			if (ch >= 'a' && ch <= 'z')
+			{
+				return ch;
+			}
+			else if (ch >= 'A' && ch <= 'Z')
+			{
+				return ch;
+			}
+			else if (ch >= '0' && ch <= '9')
+			{
+				//number
+				return ch;
+			}
+		}
+		else if (logic == Validation.Password)
+		{
+			if (ch >= 'a' && ch <= 'z')
+			{
+				return ch;
+			}
+			else if (ch >= 'A' && ch <= 'Z')
+			{
+				return ch;
+			}
+			else if (ch >= '0' && ch <= '9')
+			{
+				return ch;
+			}
+		}
+		else if (logic == Validation.PositiveInteger)
+		{
+			if(text.Length > 1 && text[0] == '0')
+				text = text.Substring(1);
+
+			if (ch >= '0' && ch <= '9')
+			{
+				return ch;
 			}
 		}
 		return (char)0;

@@ -62,7 +62,7 @@ public class UIAnchor : MonoBehaviour
 	/// <summary>
 	/// Depth offset applied to the anchored widget. Mainly useful for 3D UIs.
 	/// </summary>
-	[Obsolete("Removed in 2.3.0: Removed UIAnchor.depthOffset seeing as it caused more confusion than anything else. Just use an offset child GameObject.")]
+	[System.Obsolete("Removed in 2.3.0: Removed UIAnchor.depthOffset seeing as it caused more confusion than anything else. Just use an offset child GameObject.")]
 	public float depthOffset = 0f;
 
 	/// <summary>

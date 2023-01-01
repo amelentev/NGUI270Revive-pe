@@ -8,6 +8,7 @@ using AnimationOrTween;
 
 /// <summary>
 /// Simple checkbox functionality. If 'option' is enabled, checking this checkbox will uncheck all other checkboxes with the same parent.
+/// With PE changes.
 /// </summary>
 
 [AddComponentMenu("NGUI/Interaction/Checkbox")]
@@ -70,6 +71,7 @@ public class UICheckbox : MonoBehaviour
 
 	public OnStateChange onStateChange;
 
+	// disable buildin onClick
 	public bool IsUseSelfOnClick=true;
 
 	// Prior to 1.90 'option' was used to toggle the radio button group functionality
@@ -122,7 +124,8 @@ public class UICheckbox : MonoBehaviour
 	/// Check or uncheck on click.
 	/// </summary>
 
-	void OnClick () {
+	void OnClick ()
+	{
 		if (!IsUseSelfOnClick) return;
 		if (enabled) isChecked = !isChecked;
 	}

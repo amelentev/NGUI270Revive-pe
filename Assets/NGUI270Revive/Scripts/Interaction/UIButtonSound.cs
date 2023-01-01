@@ -7,6 +7,7 @@ using UnityEngine;
 
 /// <summary>
 /// Plays the specified sound.
+/// With PE changes.
 /// </summary>
 
 [AddComponentMenu("NGUI/Interaction/Button Sound")]
@@ -21,7 +22,12 @@ public class UIButtonSound : MonoBehaviour
 		OnRelease,
 	}
 
+	[Header("NGUI Mode Use")]
 	public AudioClip audioClip;
+	[Header("PE Mode Use")]
+	public int AudioID=422; // default click sound
+	[Header("Change Model")]
+	public bool UsePeMode = true;
 	public Trigger trigger = Trigger.OnClick;
 	public float volume = 1f;
 	public float pitch = 1f;
@@ -30,7 +36,7 @@ public class UIButtonSound : MonoBehaviour
 	{
 		if (enabled && ((isOver && trigger == Trigger.OnMouseOver) || (!isOver && trigger == Trigger.OnMouseOut)))
 		{
-			NGUITools.PlaySound(audioClip, volume, pitch);
+			PlaySound();
 		}
 	}
 
@@ -38,7 +44,7 @@ public class UIButtonSound : MonoBehaviour
 	{
 		if (enabled && ((isPressed && trigger == Trigger.OnPress) || (!isPressed && trigger == Trigger.OnRelease)))
 		{
-			NGUITools.PlaySound(audioClip, volume, pitch);
+			PlaySound();
 		}
 	}
 
@@ -46,7 +52,17 @@ public class UIButtonSound : MonoBehaviour
 	{
 		if (enabled && trigger == Trigger.OnClick)
 		{
-			NGUITools.PlaySound(audioClip, volume, pitch);
+			PlaySound();
 		}
+	}
+
+	void PlaySound()
+	{
+		if (UsePeMode && null != AudioManager.instance)
+		{
+			AudioManager.instance.Create(Vector3.zero, AudioID);
+		}
+		else
+			NGUITools.PlaySound(audioClip, volume, pitch);
 	}
 }

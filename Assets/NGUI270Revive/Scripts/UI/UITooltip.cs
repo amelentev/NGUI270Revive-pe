@@ -15,12 +15,18 @@ public class UITooltip : MonoBehaviour
 	public UISprite background;
 	public float appearSpeed = 10f;
 	public bool scalingTransitions = true;
+	public Transform mContentTrans;
+	public Transform mAnchorTrans;
+	[SerializeField]
+	private int m_LimitLineWidht = 500;
 
 	Transform mTrans;
 	float mTarget = 0f;
 	float mCurrent = 0f;
 	Vector3 mPos;
 	Vector3 mSize;
+	float mLastTime;
+	float mDeltaTime;
 
 	UIWidget[] mWidgets;
 
@@ -33,11 +39,18 @@ public class UITooltip : MonoBehaviour
 
 	void Start ()
 	{
+		mLastTime = Time.realtimeSinceStartup;
 		mTrans = transform;
 		mWidgets = GetComponentsInChildren<UIWidget>();
 		mPos = mTrans.localPosition;
 		mSize = mTrans.localScale;
-		if (uiCamera == null) uiCamera = NGUITools.FindCameraForLayer(gameObject.layer);
+		if (uiCamera == null)
+		{
+			if (GameUI.Instance != null)
+				uiCamera = GameUI.Instance.mUICamera;
+			else
+				uiCamera = NGUITools.FindCameraForLayer(gameObject.layer);
+		}
 		SetAlpha(0f);
 	}
 
@@ -47,9 +60,11 @@ public class UITooltip : MonoBehaviour
 
 	void Update ()
 	{
+		mDeltaTime = Time.realtimeSinceStartup - mLastTime;
+		mLastTime = Time.realtimeSinceStartup;
 		if (mCurrent != mTarget)
 		{
-			mCurrent = Mathf.Lerp(mCurrent, mTarget, Time.deltaTime * appearSpeed);
+			mCurrent = Mathf.Lerp(mCurrent, mTarget, mDeltaTime * appearSpeed);
 			if (Mathf.Abs(mCurrent - mTarget) < 0.001f) mCurrent = mTarget;
 			SetAlpha(mCurrent * mCurrent);
 
@@ -82,6 +97,12 @@ public class UITooltip : MonoBehaviour
 		}
 	}
 
+	void UpdatePosZ()
+	{
+		if (null != mAnchorTrans && null != mContentTrans)
+			mContentTrans.localPosition = new Vector3(0, 0, mAnchorTrans.localPosition.z);
+	}
+
 	/// <summary>
 	/// Set the tooltip's text to the specified string.
 	/// </summary>
@@ -90,8 +111,14 @@ public class UITooltip : MonoBehaviour
 	{
 		if (text != null && !string.IsNullOrEmpty(tooltipText))
 		{
+			UpdatePosZ();
+
 			mTarget = 1f;
-			if (text != null) text.text = tooltipText;
+			if (text != null)
+			{
+				text.lineWidth = 0;
+				text.text = tooltipText;
+			}
 
 			// Orthographic camera positioning is trivial
 			mPos = Input.mousePosition;
@@ -106,6 +133,11 @@ public class UITooltip : MonoBehaviour
 
 				// Calculate the dimensions of the printed text
 				mSize = text.relativeSize;
+				if (mSize.x* textScale.x > m_LimitLineWidht)
+				{
+					text.lineWidth = m_LimitLineWidht;
+					mSize = text.relativeSize;
+				}
 
 				// Scale by the transform and adjust by the padding offset
 				mSize.x *= textScale.x;
