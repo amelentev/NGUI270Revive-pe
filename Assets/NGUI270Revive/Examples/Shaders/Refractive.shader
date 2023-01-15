@@ -65,6 +65,7 @@ Shader "Transparent/Refractive"
 
 			void vert (inout appdata_full v, out Input o)
 			{
+				o = new Input();
 				o.position = UnityObjectToClipPos(v.vertex);
 				
 				#if UNITY_UV_STARTS_AT_TOP
